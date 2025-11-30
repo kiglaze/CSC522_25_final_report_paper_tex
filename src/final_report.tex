@@ -7,7 +7,9 @@
 
 % ready for submission
 \usepackage[preprint]{neurips_2024}
-
+\usepackage{booktabs}
+\usepackage{makecell}
+\usepackage{enumitem}
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
@@ -89,45 +91,152 @@
     patters. [1] This helps inform one of the models that this research will use.
 
     \section{Methods}
-    The Osprey .csv
-    file geographical observation data was grouped by observation date week and
-    then mapped onto maps of North America. Observation countries of focus were
-    limited to the United States, Canada, Mexico, and Cuba. These geographical
-    distribution maps were stitched together in chronological order to make animations
-    showing seasonal migration patterns. This process was repeated for seasons. It
-    was also repeated for California Condors and Atlantic Puffins for weeks and
-    seasons as well.
+Osprey, Atlantic Puffin, and California observation data was first studied within a
+larger geographical region (United States, Mexico, Canada, and Cuba). Then, the
+geographical area of focus was narrowed and restricted for each bird species
+for the next phase of the study.
 
-    To clean up the
-    geographical observation data, all four of the previous animations were
-    re-created, but with “noise” points being excluded by applying DBSCAN. The
-    distance calculation used for DBSCAN was the “Haversine” distance, which
-    accounts for the nature of latitude, longitude, and the roundness of the Earth.
-    These post-DBSCAN geographical animations gave a clearer visualization of bird
-    migration patterns by species. These cleaned up migration pattern
-    visualizations.
+To study the Osprey, Atlantic Puffin, and California observation data at a larger geographic
+scale, corresponding .csv file geographical observation data was grouped by
+observation date week and year combinations for all observation dates between
+March 1, 2023 and August 31, 2025. Then it was mapped onto maps of North
+America by latitude and longitude. Observation countries of focus were limited
+to the United States, Canada, Mexico, and Cuba. A similar process was followed
+for this data to also demonstrate maps showing bird sightings grouped by season
+and year for each listed species. Because the number of observations per annual
+season for some bird species was too large to visualize on a map, samples of
+the total number of seasonal observations were taken for the purposes of data
+visualization. Here are the seasonal sample percentages shown by species below:
 
-    With this done, specific locations were singled out for the next step using the
-    visualization maps. The following geographical location and bird species
-    combinations were human-selected for further examination: Ospreys at Glacier
-    Bay in Alaska, California Condors at the Grand Canyon, and Atlantic Puffins in
-    the Massachusetts coastal area. For each of these bird species and geographical
-    area combinations, data was transformed to determine whether bird species
-    sightings existed for the corresponding geographical area each week between
-    March 2015 and August 2025. This was created to help predict the likelihood of
-    Osprey sightings each week of the year. To do this, this data was fit to
-    logistic regression model.
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{l c}
+            \toprule
+            \textbf{Species} & \textbf{Percentage Sampled (Per Annual Season)} \\
+            \midrule
+            Osprey & 10\% \\
+            Atlantic Puffin & 40\% \\
+            California Condor & 100\% \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 
-    Next, GIS data (including temperature and other weather data) will be joined with the
-    bird geographical and temporal observation data to provide more variables for
-    additional model exploration of each studied species in their respective
-    geographical location. These additional variables will help predict the
-    presence of bird species sightings per week in a more detailed fashion. Additional
-    models utilizing these additional variables will include most of the following:
-    Naïve Bayes, Decision Trees, Random Forest, and
-    Gradient Boosted Trees, and possibly XGBoost. They will continue to predict the
-    likelihood of each of these bird species being spotted in their corresponding
-    geographical region of focus.
+These geographical distribution maps were stitched together in chronological order to
+make animations showing seasonal migration patterns. This resulted in the creation
+of the following types of map visualization animations using raw data:
+    \begin{itemize}[noitemsep, topsep=0pt]
+        \item Osprey weekly sighting maps
+        \item Osprey seasonal sighting maps (sampled at 10\%)
+        \item Atlantic Puffin weekly sighting maps
+        \item Atlantic Puffin seasonal sighting maps (sampled at 40\%)
+        \item California Condor weekly sighting maps
+        \item California Condor seasonal sighting maps (100\% of seasonal sighting data points)
+    \end{itemize}
+
+To clean up the geographical observation data map visualizations and thus the
+corresponding map animations, all six of the previously listed animations were
+re-created, but with “noise” points being excluded by applying DBSCAN. The
+distance calculation used for DBSCAN was the “Haversine” distance, which
+accounts for the nature of latitude, longitude, and the roundness of the Earth.
+DBSCAN was applied for the data points in each individual map making up an
+animation. These post-DBSCAN geographical animations provided a clearer
+visualization of bird migration pattern clusters by species.
+
+Next, geographic regions of focus were narrowed for the remainder of the study. A
+specific latitude and longitude range was singled out for each of the three
+species, Osprey, Atlantic Puffins, and California Condors, using the generated
+visualization maps and animations. The following geographical location and bird
+species combinations were human-selected for further examination: Ospreys in
+the Eastern Glacier Bay area in Alaska, Atlantic Puffins in the Massachusetts area,
+and California Condors in the Grand Canyon area of Arizona. These hand-selected
+geographic regions of focus are more clearly defined by latitude and longitude
+ranges, which are demonstrated in the figures below.
+
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{l l c c c c}
+            \toprule
+            \textbf{Bird Species} &
+            \makecell{\textbf{Region}\\\textbf{Label}} &
+            \makecell{\textbf{Minimum}\\\textbf{Latitude}} &
+            \makecell{\textbf{Maximum}\\\textbf{Latitude}} &
+            \makecell{\textbf{Minimum}\\\textbf{Longitude}} &
+            \makecell{\textbf{Maximum}\\\textbf{Longitude}} \\
+            \midrule
+
+            \textbf{Osprey} &
+            \makecell[l]{Eastern\\Glacier Bay\\Area, Alaska} &
+            58.0 & 60.0 & -137.0 & -135.0 \\[2pt]
+
+            \textbf{Atlantic Puffin} &
+            \makecell[l]{Massachusetts\\Area} &
+            41.0 & 42.8 & -73.7 & -69.8 \\[2pt]
+
+            \textbf{California Condor} &
+            \makecell[l]{Grand Canyon\\Area, Arizona} &
+            35.0 & 37.0 & -113.0 & -111.0 \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+These map visualizations show the selected geographic regions of focus more specifically:
+
+    \begin{figure}[H]
+        \centering
+        % First row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/geographic_regions/osprey_region.png}
+            \caption{
+                Osprey Region of Focus - Eastern Glacier Bay Area, Alaska.\\
+                Latitude Range: (58.0, 60.0).\\
+                Longitude Range: (-137.0, -135.0).
+            }
+            \label{fig:geo_reg_osprey}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/geographic_regions/atl_puffin_region.png}
+            \caption{
+                Atlantic Puffin Region of Focus - Massachusetts Area.\\
+                Latitude Range: (41.0, 42.8).\\
+                Longitude Range: (-73.7, -69.8).
+            }
+            \label{fig:geo_reg_atl_puffin}
+        \end{subfigure}
+
+        \vspace{0.5em}
+
+        % Second row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/geographic_regions/ca_condor_region.png}
+            \caption{
+                California Condor Region of Focus - Grand Canyon Area, Arizona.\\
+                Latitude Range: (35.0, 37.0).\\
+                Longitude Range: (-113.0, -111.0).
+            }
+            \label{fig:geo_reg_ca_condor}
+        \end{subfigure}
+
+        \caption{Geographical Regions Selected - Per Species}
+        \label{fig:geo_reg_grid}
+    \end{figure}
+
+For each of these bird species and geographical area combinations, data was
+transformed to determine whether bird species sightings existed in the
+corresponding geographical areas each week between March 2015 and August 2025.
+This was created to help predict the likelihood of Osprey sightings for each
+week of the year. To do this, this data was fit to a cyclic logistic regression
+model for each species and geographic region combination.
+
+Next, environmental and weather data obtained from the MeteoStat Python package was joined
+with the bird geographical and temporal observation data. This provided more
+variables for additional model exploration of each studied species in their
+respective geographical location. These additional variables helped predict the
+presence or absence of bird species sightings in their chosen geographic region
+per week in a more detailed fashion. The following tree-based classification
+machine learning models were implemented to assist with these predictions:
+Decision Tree with pruning, Random Forest, Gradient Boosted Trees, and Extreme
+Gradient Boosting (XGBoost).
 
     \section{Experiment Setup}
     A large 200GB
