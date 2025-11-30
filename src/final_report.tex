@@ -1,0 +1,302 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2024
+
+
+% ready for submission
+\usepackage[preprint]{neurips_2024}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2024}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2024}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2024}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{graphicx}       % for showing images
+\usepackage{subcaption}
+\usepackage{float}
+
+
+\title{Midway Report -- Exploration of Migration Patterns and Prediction of Sightings for Osprey, California Condor, and Puffin Species}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+    Iris Glaze \\
+    \texttt{kiglaze@ncsu.edu} \\
+}
+
+
+
+\begin{document}
+
+    \maketitle
+
+    % Added sections for project report
+    \section{Background \& Introduction}
+    The Cornell Lab of Ornithology maintains a large database of bird observations called EBird.
+    Birdwatchers submit their bird observations through the Cornell Lab of
+    Ornithology mobile app or website, so the data is crowd-sourced. Data points
+    exist for thousands of bird species. [7]
+
+    This study is focused on Ospreys, California Condors, and Atlantic Puffins in
+    the United States, Mexico, Canada, and Cuba. Ospreys and Atlantic Puffins both
+    migrate, but California Condors do not. California Condors are endangered, and Atlantic
+    Puffins have a vulnerable population but are not endangered. Ospreys currently
+    have a low concern level regarding their population, but their population has previously
+    been under threat in the 1950’s. Given this variety of bird characteristics,
+    models can be created to predict the presence of bird sightings during a given
+    week and location for each of these bird species.
+
+    Limitations of studying the eBird data include that observations depend on
+    humans being present and able to access Cornell’s bird app or website. More
+    humans birdwatching may be associated with more observations in the dataset.
+    The data also depends on people using the bird app to use the app properly.
+
+    Predicting the presence of bird species sightings per week is useful to better understand the
+    ecological makeup of a geographical region in relation to time. It also
+    provides information about the bird species’ migration patterns in relation to
+    a particular geographic region, and the health of the bird population.
+
+    Martin’s paper uses random forests as one of the machine learning models to predict special-temporal
+    patters. [1] This helps inform one of the models that this research will use.
+
+    \section{Methods}
+    The Osprey .csv
+    file geographical observation data was grouped by observation date week and
+    then mapped onto maps of North America. Observation countries of focus were
+    limited to the United States, Canada, Mexico, and Cuba. These geographical
+    distribution maps were stitched together in chronological order to make animations
+    showing seasonal migration patterns. This process was repeated for seasons. It
+    was also repeated for California Condors and Atlantic Puffins for weeks and
+    seasons as well.
+
+    To clean up the
+    geographical observation data, all four of the previous animations were
+    re-created, but with “noise” points being excluded by applying DBSCAN. The
+    distance calculation used for DBSCAN was the “Haversine” distance, which
+    accounts for the nature of latitude, longitude, and the roundness of the Earth.
+    These post-DBSCAN geographical animations gave a clearer visualization of bird
+    migration patterns by species. These cleaned up migration pattern
+    visualizations.
+
+    With this done, specific locations were singled out for the next step using the
+    visualization maps. The following geographical location and bird species
+    combinations were human-selected for further examination: Ospreys at Glacier
+    Bay in Alaska, California Condors at the Grand Canyon, and Atlantic Puffins in
+    the Massachusetts coastal area. For each of these bird species and geographical
+    area combinations, data was transformed to determine whether bird species
+    sightings existed for the corresponding geographical area each week between
+    March 2015 and August 2025. This was created to help predict the likelihood of
+    Osprey sightings each week of the year. To do this, this data was fit to
+    logistic regression model.
+
+    Next, GIS data (including temperature and other weather data) will be joined with the
+    bird geographical and temporal observation data to provide more variables for
+    additional model exploration of each studied species in their respective
+    geographical location. These additional variables will help predict the
+    presence of bird species sightings per week in a more detailed fashion. Additional
+    models utilizing these additional variables will include most of the following:
+    Naïve Bayes, Decision Trees, Random Forest, and
+    Gradient Boosted Trees, and possibly XGBoost. They will continue to predict the
+    likelihood of each of these bird species being spotted in their corresponding
+    geographical region of focus.
+
+    \section{Experiment Setup}
+    A large 200GB
+    dataset of bird sighting data, named Basic Dataset, was downloaded from \href{https://ebird.org/data/download}{https://ebird.org/data/download} after requesting access permission from
+    Cornell’s Lab of Ornithology. This data includes latitude, longitude, bird
+    species name, observation date, country name, some additional variables
+    describing the geographical location, and sometimes the bird’s behavior. Next,
+    a Python script was used to extract all data for specific species of birds by
+    filtering the large dataset in chunks. This data was exported it to a .csv
+    file. The set of bird species included were Ospreys, California Condors, and
+    Atlantic Puffins. Then, the Osprey observations, California Condor
+    observations, and Atlantic Puffin observations were each output to their own
+    single .csv file.
+
+    After bird species were sorted into their own .csv files, additional columns
+    were added to describe the observation dates to make for easier grouping by
+    dates. Some of these included the month, the year, the season, and the week
+    number. Columns for the latitude and longitude in radians were also added to
+    help with DBSCAN calculations.
+
+    \section{Results}
+    Here are examples of DBSCAN being applied. The first example is from observation days
+    being grouped by week, and the second example has days grouped by season.\\
+    Week 33, 2024: Osprey Observation Map
+    % Side-by-side images for Osprey week 33, 2024
+    \begin{samepage}
+        \begin{figure}[h]
+            \centering
+            \begin{minipage}{0.48\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/no_dbscan_osprey_week33_2024.png}
+                \caption{Without DBSCAN}
+                \label{fig:no_dbscan_osprey_wk33_24}
+            \end{minipage}\hfill
+            \begin{minipage}{0.48\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/dbscan_osprey_week33_2024.png}
+                \caption{With DBSCAN}
+                \label{fig:dbscan_osprey_wk33_24}
+            \end{minipage}
+        \end{figure}
+
+        \vspace{-1em}
+        Winter 2023: Osprey Observation Map
+        % Side-by-side images for Osprey Winter 2023
+        \begin{figure}[h]
+            \centering
+            \begin{minipage}{0.48\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/no_dbscan_osprey_winter_2023.png}
+                \caption{Without DBSCAN}
+                \label{fig:no_dbscan_osprey_winter23}
+            \end{minipage}\hfill
+            \begin{minipage}{0.48\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{images/dbsan_osprey_winter_2023.png}
+                \caption{With DBSCAN}
+                \label{fig:dbscan_osprey_winter23}
+            \end{minipage}
+        \end{figure}
+    \end{samepage}
+
+    Animations linked in YouTube below demonstrate the DBSCAN maps over time from March 2023-August
+    2025 for each species. The animations helped inform selecting locations of
+    further focus for the next step, cyclic logistic regression.\\
+
+    \begin{samepage}
+        Weekly observation date groupings: \\
+        Osprey, DBSCAN, Weekly: \url{https://youtu.be/ezr50wL6RH8} \\
+        California Condor, DBSCAN, Weekly: \url{https://youtu.be/-5MAU0RcSOI} \\
+        Atlantic Puffin, DBSCAN, Weekly: \url{https://youtu.be/eX5zdkZRiiQ} \\
+        Seasonal observation date groupings: \\
+        Osprey, DBSCAN, Seasonal: \url{https://youtu.be/pz5BUI0dS8o} \\
+        California Condor, DBSCAN, Seasonal: \url{https://youtu.be/aYx9zGKV7Q0} \\
+        Atlantic Puffin, DBSCAN, Seasonal: \url{https://youtu.be/XfmMUglQXGs} \\
+    \end{samepage}
+
+    Cyclical logistic regression was carried out for the presence of Osprey sightings given
+    the week number. This plot demonstrates a peak in the likelihood of viewing at
+    least one Osprey in Glacier Bay around approximately week 29 or week 30, which is mid to late July.
+
+    \begin{figure}[H]
+        \centering
+        % First row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/log_reg_osprey_glacier_bay,_alaska.png}
+            \caption{Osprey: Glacier Bay, Alaska}
+            \label{fig:cyc_log_reg_osprey}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/log_reg_california_condor_grand_canyon.png}
+            \caption{California Condor: Grand Canyon}
+            \label{fig:cyc_log_reg_condor}
+        \end{subfigure}
+
+        \vspace{0.5em}
+
+        % Second row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/log_reg_atlantic_puffin_massachusetts_coastal_area.png}
+            \caption{Atlantic Puffin: Massachusetts Coastal Area}
+            \label{fig:cyc_log_reg_puffin}
+        \end{subfigure}
+
+        \caption{Cyclical Logistic Regression: Likelihood of Bird Observation Occurrence in Specified Geographical Regions by Week for Three Species/Locations}
+        \label{fig:cyc_log_reg_grid}
+    \end{figure}
+    Results for Naïve Bayes, Decision Trees, Random Forest, and Gradient Boosted Trees are still in
+    progress.
+
+    \section{Conclusion}
+    Although California Condors have many fewer sightings than Osprey overall, they are
+    consistently likely to be spotted in the Grand Canyon at least once a week, any
+    given week during the year. Ospreys are much more abundant than California
+    Condors, but only likely to be spotted in Glacier Bay, Alaska during the warmer
+    months. Similarly, the DBSCAN maps showing bird observations support what is
+    shown in the cyclic logistic regression plots in both cases. However, the
+    Atlantic Puffin data was slightly surprising because sightings of Atlantic
+    Puffins in the Massachusetts coastal area carried on into the winter months.
+    Atlantic Puffin binary presence per week seemed to be more common in winter
+    months. This aligns partially with how the DBSCAN map animations of Atlantic
+    Puffin migrations in the sense that Atlantic Puffins tend to migrate further
+    North than Massachusetts in the summer, in Maine and coastal South-Eastern
+    Canada.
+
+    \appendix
+    \section{Appendix -- Plan Revision}
+    DBSCAN and logistic regression were still used, but K-means
+    was dropped from the models list, because it requires the number of clusters to
+    be pre-determined. Also “cyclic” logistic regression was used instead of
+    regular logistic regression, to account for the seasonal nature of bird sighting
+    occurrences. Remaining models to implement for prediction still include Naïve Bayes,
+    Decision Trees, Random Forest, and Gradient Boosted Trees. However, I may
+    choose to replace one with XGBoost. Also, one of these models may be dropped
+    from the final results depending on how useful other models are.
+
+    Additionally, the likelihood of the \textit{existence} of a bird sighting given a
+    particular \textit{week} is being studied. This is happening in place of studying
+    the likelihood of spotting a bird given a particular \textit{day}. The existence
+    of a bird sighting in a given week simply means there must be at least one bird
+    observation recorded, which differs from examining the number of observations
+    in a place for that species.
+
+
+    \section*{References}
+    \medskip
+    {
+        \small
+        [1] Martín, B., J. González-Arias, and J. A. Vicente-Vírseda.
+    "Machine learning as a successful approach for predicting complex
+    spatio-temporal patterns in animal species abundance." Machine learning 44
+        (2021): 289-301.
+
+        [2] Fuentes, Miguel, et al. "BirdFlow: Learning seasonal
+    bird movements from eBird data." Methods in Ecology and Evolution 14.3
+        (2023): 923-938.
+
+        [3] Ahmed, dis- Nahian, et al. "Spatial clustering of
+    citizen science data improves downstream species tribution models."
+    Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 39. No. 27.
+    2025.
+
+        [4] Cornell Lab. Osprey. All About Birds. \url{https://www.allaboutbirds.org/guide/Osprey/}
+
+    [5] Cornell Lab. California Condor. All About Birds. \url{https://www.allaboutbirds.org/guide/California_Condor/}
+
+    [6] Cornell Lab. Atlantic Puffin. All About Birds. \url{https://www.allaboutbirds.org/guide/Atlantic_Puffin/}
+
+    [7] eBird. About eBird. \url{https://ebird.org/about}
+    }
+\end{document}
