@@ -7,7 +7,6 @@
 
 % ready for submission
 \usepackage[preprint]{neurips_2024}
-\usepackage{booktabs}
 \usepackage{makecell}
 \usepackage{enumitem}
 
@@ -350,25 +349,107 @@ per week in a more detailed fashion.
         \end{subfigure}
         \hfill
         \begin{subfigure}{0.48\textwidth}
-            \includegraphics[width=\textwidth]{images/log_reg_california_condor_grand_canyon.png}
-            \caption{California Condor: Grand Canyon}
-            \label{fig:cyc_log_reg_condor}
+            \includegraphics[width=\textwidth]{images/log_reg_atlantic_puffin_massachusetts_coastal_area.png}
+            \caption{Atlantic Puffin: Massachusetts Coastal Area}
+            \label{fig:cyc_log_reg_puffin}
         \end{subfigure}
 
         \vspace{0.5em}
 
         % Second row
         \begin{subfigure}{0.48\textwidth}
-            \includegraphics[width=\textwidth]{images/log_reg_atlantic_puffin_massachusetts_coastal_area.png}
-            \caption{Atlantic Puffin: Massachusetts Coastal Area}
-            \label{fig:cyc_log_reg_puffin}
+            \includegraphics[width=\textwidth]{images/log_reg_california_condor_grand_canyon.png}
+            \caption{California Condor: Grand Canyon}
+            \label{fig:cyc_log_reg_condor}
         \end{subfigure}
 
         \caption{Cyclical Logistic Regression: Likelihood of Bird Observation Occurrence in Specified Geographical Regions by Week for Three Species/Locations}
         \label{fig:cyc_log_reg_grid}
     \end{figure}
-    Results for Naïve Bayes, Decision Trees, Random Forest, and Gradient Boosted Trees are still in
-    progress.
+
+Decision Trees with pruning showed some information about how feature values could help
+predict the presence of absence of the various bird species. Osprey were more
+likely to be spotted in the Eastern Glacier Bay region of focus during a week
+when the average temperature was over 4.16 degrees Celsius, and less likely to
+be spotted when the week is NOT in the middle of the Summer (week\_cos >
+-0.733). Atlantic Puffins were more likely to be spotted in the specified
+Massachusetts area during the middle of Winter (week\_cos > 0.857), or if
+there is more than 5.941 mm of precipitation during a given week. California
+Condors tended to be more likely to be spotted in the Grand Canyon region of
+focus when it’s NOT in the middle of Winter (week\_cos <= .474) or when the
+maximum temperature exceeds 13.15 Celsius AND the wind speed exceeds 8.683 km/hour.
+
+    \begin{figure}[H]
+        \centering
+        % First row
+        \begin{subfigure}{0.60\textwidth}
+            \centering
+            \includegraphics[width=1.0\textwidth]{images/decision_trees/osprey_dec_tree.png}
+            \caption{Decision tree for Osprey weekly sightings.}
+            \label{fig:osprey_dec_tree2}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.36\textwidth}
+            \centering
+            \includegraphics[width=1.2\textwidth]{images/decision_trees/atl_puffin_dec_tree.png}
+            \caption{Decision tree for Atlantic Puffin weekly sightings.}
+            \label{fig:atl_puff_dec_tree2}
+        \end{subfigure}
+
+        \vspace{0.5em}
+
+        % Second row
+        \begin{subfigure}{0.90\textwidth}
+            \centering
+            \includegraphics[width=1.0\textwidth]{images/decision_trees/ca_condor_dec_tree.png}
+            \caption{Decision tree for California Condor weekly sightings.}
+            \label{fig:ca_condor_dec_tree2}
+        \end{subfigure}
+
+        \caption{Random Forest: Most Important Features}
+        \label{fig:rand_forest_grid2}
+    \end{figure}
+
+The Random Forest model was run for each species and geographical region
+combination, and it indicated the most important deciding features for predicting
+the presence vs. absence of a bird. The most important deciding feature for the
+presence or absence of Osprey was average temperature, followed by minimum
+temperature. The seasonality continuous variable week\_cos placed third. For
+Atlantic Puffins, the two most important deciding features were seasonality
+(week\_cos) and then the amount of precipitation. The most important features
+for predicting presence vs. absence of California Condors included: maximum
+temperature, average temperature, and seasonality (week\_cos).
+
+    \begin{figure}[H]
+        \centering
+        % First row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_osprey.png}
+            \caption{Osprey: Glacier Bay, Alaska}
+            \label{fig:rand_forest_osprey}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_atlantic_puffin.png}
+            \caption{Atlantic Puffin: Massachusetts Coastal Area}
+            \label{fig:rand_forest_puffin}
+        \end{subfigure}
+
+        \vspace{0.5em}
+
+        % Second row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_california_condor.png}
+            \caption{California Condor: Grand Canyon}
+            \label{fig:rand_forest_condor}
+        \end{subfigure}
+
+        \caption{Random Forest: Most Important Features}
+        \label{fig:rand_forest_grid}
+    \end{figure}
+
+The predicting power of all four tree classification models was compared for all
+three bird species.
 
     \section{Conclusion}
     Although California Condors have many fewer sightings than Osprey overall, they are
