@@ -238,24 +238,37 @@ machine learning models were implemented to assist with these predictions:
 Decision Tree with pruning, Random Forest, Gradient Boosted Trees, and Extreme
 Gradient Boosting (XGBoost).
 
-    \section{Experiment Setup}
-    A large 200GB
-    dataset of bird sighting data, named Basic Dataset, was downloaded from \href{https://ebird.org/data/download}{https://ebird.org/data/download} after requesting access permission from
-    Cornell’s Lab of Ornithology. This data includes latitude, longitude, bird
-    species name, observation date, country name, some additional variables
-    describing the geographical location, and sometimes the bird’s behavior. Next,
-    a Python script was used to extract all data for specific species of birds by
-    filtering the large dataset in chunks. This data was exported it to a .csv
-    file. The set of bird species included were Ospreys, California Condors, and
-    Atlantic Puffins. Then, the Osprey observations, California Condor
-    observations, and Atlantic Puffin observations were each output to their own
-    single .csv file.
+\section{Plan and Experiment Setup}
 
-    After bird species were sorted into their own .csv files, additional columns
-    were added to describe the observation dates to make for easier grouping by
-    dates. Some of these included the month, the year, the season, and the week
-    number. Columns for the latitude and longitude in radians were also added to
-    help with DBSCAN calculations.
+A large 200GB dataset of bird sighting data, named Basic Dataset, was downloaded
+from \href{https://ebird.org/data/download}{https://ebird.org/data/download} after requesting
+access permission from Cornell’s Lab of Ornithology. This data includes
+latitude, longitude, bird species name, observation date, country name, some
+additional variables describing the geographical location, and sometimes the
+bird’s behavior. Next, a Python script was used to extract all data for
+specific species of birds by filtering the large dataset in chunks. This data
+was exported it to a .csv file. The set of bird species included were Ospreys,
+California Condors, and Atlantic Puffins. Then, the Osprey observations,
+California Condor observations, and Atlantic Puffin observations were each
+output to their own single .csv file.
+
+After bird species were sorted into their own .csv files, additional columns were
+added to describe the observation dates to make for easier grouping by dates.
+Some of these included the month, the year, the season, and the week number.
+Columns for the latitude and longitude in radians were also added to help with
+DBSCAN calculations.
+
+A dataset was created for each bird species which contained each week and year combination
+between March 1, 2015 and August 31, 2025. Another Boolean column was added to
+indicate if the bird was spotted in its geographic region of focus during that
+given week or not.
+
+Next, environmental and weather data obtained from the MeteoStat Python package was joined with this
+dataset which indicated if a bird was spotted or not. This provided more
+variables for additional model exploration of each studied species in their
+respective geographical location. These additional variables helped predict the
+presence or absence of bird species sightings in their chosen geographic region
+per week in a more detailed fashion.
 
     \section{Results}
     Here are examples of DBSCAN being applied. The first example is from observation days
