@@ -224,7 +224,11 @@ For each of these bird species and geographical area combinations, data was tran
 determine whether bird species sightings existed in the corresponding
 geographical areas each week between March 2015 and August 2025. This was
 created to help predict whether a bird species is spotted in its geographical
-region of focus given a week.
+region of focus given a week. So, the \textit{existence} of a bird sighting for a
+given week and region was studied rather than the \textit{number} of sightings during
+a week. This design choice was made because some sightings in the same day
+could be submitted by different people but refer to the same bird on the same
+day.
 
 To do this, first this data was fit to a cyclic logistic regression model for each species and
 geographic region combination to predict likelihoods based on the week number
@@ -417,12 +421,12 @@ maximum temperature exceeds 13.15 Celsius AND the wind speed exceeds 8.683 km/ho
         \end{subfigure}
 
         \caption{Random Forest: Most Important Features}
-        \label{fig:rand_forest_grid2}
+        \label{fig:dec_tree_grid}
     \end{figure}
 
 The Random Forest model was run for each species and geographical region
 combination, and it indicated the most important deciding features for predicting
-the presence vs. absence of a bird. The most important deciding feature for the
+the presence vs. absence of a bird. Graphical representations of these results are shown in Figure~\ref{fig:rand_forest_grid}. The most important deciding feature for the
 presence or absence of Osprey was average temperature, followed by minimum
 temperature. The seasonality continuous variable week\_cos placed third. For
 Atlantic Puffins, the two most important deciding features were seasonality
@@ -430,104 +434,92 @@ Atlantic Puffins, the two most important deciding features were seasonality
 for predicting presence vs. absence of California Condors included: maximum
 temperature, average temperature, and seasonality (week\_cos).
 
-    \begin{figure}[H]
-        \centering
-        % First row
-        \begin{subfigure}{0.48\textwidth}
-            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_osprey.png}
-            \caption{Osprey: Glacier Bay, Alaska}
-            \label{fig:rand_forest_osprey}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}{0.48\textwidth}
-            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_atlantic_puffin.png}
-            \caption{Atlantic Puffin: Massachusetts Coastal Area}
-            \label{fig:rand_forest_puffin}
-        \end{subfigure}
-
-        \vspace{0.5em}
-
-        % Second row
-        \begin{subfigure}{0.48\textwidth}
-            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_california_condor.png}
-            \caption{California Condor: Grand Canyon}
-            \label{fig:rand_forest_condor}
-        \end{subfigure}
-
-        \caption{Random Forest: Most Important Features}
-        \label{fig:rand_forest_grid}
-    \end{figure}
-
 The predicting power of all four tree classification models was compared for all
 three bird species.
 
+% tighten tables
+    \renewcommand{\arraystretch}{0.85}
+    \setlength{\tabcolsep}{3pt}
+
+    \renewcommand{\arraystretch}{0.85}
+    \setlength{\tabcolsep}{3pt}
+
     \begin{table}[h!]
         \centering
         \footnotesize
-        \begin{subtable}{0.49\textwidth}
+
+        % ----- Subtable A -----
+        \begin{subtable}{0.48\textwidth}
             \centering
             \begin{tabular}{lcccc}
                 \toprule
-                & \textbf{Dec. Tree} & \textbf{Random Forest} & \textbf{Gradient Boosting} & \textbf{XGBoost} \\
+                & \textbf{Dec. Tree} & \textbf{RF} & \textbf{GB} & \textbf{XGB} \\
                 \midrule
                 Accuracy & 0.652 & 0.667 & 0.776 & \textbf{0.782} \\
-                True – Recall & \textbf{0.850} & 0.750 & 0.519 & 0.26 \\
-                True – Precision & 0.274 & 0.268 & \textbf{0.368} & 0.30 \\
-                True – F1 & 0.415 & 0.395 & \textbf{0.431} & 0.28 \\
-                False – Recall & 0.619 & 0.653 & 0.826 & \textbf{0.88} \\
-                False – Precision & \textbf{0.961} & 0.939 & 0.898 & 0.86 \\
-                False – F1 & 0.753 & 0.770 & 0.860 & \textbf{0.87} \\
-                Macro Avg. – F1 & 0.584 & 0.582 & \textbf{0.646} & 0.58 \\
-                Balanced Accur. & \textbf{0.734} & 0.701 & 0.672 & 0.572 \\
+                True–Recall & \textbf{0.850} & 0.750 & 0.519 & 0.26 \\
+                True–Precision & 0.274 & 0.268 & \textbf{0.368} & 0.30 \\
+                True–F1 & 0.415 & 0.395 & \textbf{0.431} & 0.28 \\
+                False–Recall & 0.619 & 0.653 & 0.826 & \textbf{0.88} \\
+                False–Precision & \textbf{0.961} & 0.939 & 0.898 & 0.86 \\
+                False–F1 & 0.753 & 0.770 & 0.860 & \textbf{0.87} \\
+                Macro F1 & 0.584 & 0.582 & \textbf{0.646} & 0.58 \\
+                Balanced Acc. & \textbf{0.734} & 0.701 & 0.672 & 0.572 \\
                 \bottomrule
             \end{tabular}
-            \caption{Accuracy, Precision, Recall, and F1-score for Osprey Models}
+            \caption{Osprey Models}
             \label{tab:osprey_metrics}
-        \end{subtable}\hfill
-
-        \begin{subtable}{0.49\textwidth}
+        \end{subtable}
+        \hfill
+        % ----- Subtable B -----
+        \begin{subtable}{0.48\textwidth}
             \centering
-            \footnotesize
             \begin{tabular}{lcccc}
                 \toprule
-                & \textbf{Dec. Tree} & \textbf{Random Forest} & \textbf{Gradient Boosting} & \textbf{XGBoost} \\
+                & \textbf{Dec. Tree} & \textbf{RF} & \textbf{GB} & \textbf{XGB} \\
                 \midrule
                 Accuracy & 0.768 & \textbf{0.783} & 0.685 & 0.703 \\
-                True – Recall & \textbf{0.600} & 0.533 & 0.372 & 0.23 \\
-                True – Precision & 0.474 & \textbf{0.500} & 0.390 & 0.38 \\
-                True – F1 & \textbf{0.529} & 0.516 & 0.381 & 0.29 \\
-                False – Recall & 0.815 & 0.852 & 0.795 & \textbf{0.87} \\
-                False – Precision & \textbf{0.880} & 0.868 & 0.782 & 0.76 \\
-                False – F1 & 0.846 & \textbf{0.860} & 0.789 & 0.81 \\
-                Macro Avg. – F1 & \textbf{0.688} & \textbf{0.688} & 0.585 & 0.55 \\
-                Balanced Accur. & \textbf{0.707} & 0.693 & 0.584 & 0.551 \\
+                True–Recall & \textbf{0.600} & 0.533 & 0.372 & 0.23 \\
+                True–Precision & 0.474 & \textbf{0.500} & 0.390 & 0.38 \\
+                True–F1 & \textbf{0.529} & 0.516 & 0.381 & 0.29 \\
+                False–Recall & 0.815 & 0.852 & 0.795 & \textbf{0.87} \\
+                False–Precision & \textbf{0.880} & 0.868 & 0.782 & 0.76 \\
+                False–F1 & 0.846 & \textbf{0.860} & 0.789 & 0.81 \\
+                Macro F1 & \textbf{0.688} & \textbf{0.688} & 0.585 & 0.55 \\
+                Balanced Acc. & \textbf{0.707} & 0.693 & 0.584 & 0.551 \\
                 \bottomrule
             \end{tabular}
-            \caption{Accuracy, Precision, Recall, and F1-score for Atlantic Puffin Models}
+            \caption{Atlantic Puffin Models}
             \label{tab:puffin_metrics}
-        \end{subtable}\hfill
+        \end{subtable}
+
+        \vspace{8pt}
+
+        % ----- Subtable C -----
+        \begin{subtable}{0.7\textwidth}
+            \centering
+            \begin{tabular}{lcccc}
+                \toprule
+                & \textbf{Dec. Tree} & \textbf{RF} & \textbf{GB} & \textbf{XGB} \\
+                \midrule
+                Accuracy & 0.891 & 0.920 & 0.939 & \textbf{0.946} \\
+                True–Recall & 0.896 & 0.933 & 0.963 & \textbf{0.97} \\
+                True–Precision & \textbf{0.992} & 0.984 & 0.975 & 0.97 \\
+                True–F1 & 0.941 & 0.958 & 0.969 & \textbf{0.97} \\
+                False–Recall & \textbf{0.750} & 0.500 & 0.200 & 0.20 \\
+                False–Precision & 0.176 & \textbf{0.182} & 0.143 & 0.17 \\
+                False–F1 & \textbf{0.286} & 0.267 & 0.167 & 0.18 \\
+                Macro F1 & \textbf{0.613} & 0.612 & 0.568 & 0.58 \\
+                Balanced Acc. & \textbf{0.823} & 0.716 & 0.581 & 0.584 \\
+                \bottomrule
+            \end{tabular}
+            \caption{California Condor Models}
+            \label{tab:condor_metrics}
+        \end{subtable}
+
+        \caption{Accuracy, Recall, Precision, F1-score, and Balanced Accuracy for all three bird species. Models compared include: Decision Tree with pruning, Random Forest, Gradient Boosting Classifier, and Extreme Gradient Boosting (XGBoost).}
+        \label{tab:all_species_metrics}
     \end{table}
-    \begin{table}[h!]
-        \centering
-        \footnotesize
-        \begin{tabular}{lcccc}
-            \toprule
-            & \textbf{Dec. Tree} & \textbf{Random Forest} & \textbf{Gradient Boosting} & \textbf{XGBoost} \\
-            \midrule
-            Accuracy & 0.891 & 0.920 & 0.939 & \textbf{0.946} \\
-            True – Recall & 0.896 & 0.933 & 0.963 & \textbf{0.97} \\
-            True – Precision & \textbf{0.992} & 0.984 & 0.975 & 0.97 \\
-            True – F1 & 0.941 & 0.958 & 0.969 & \textbf{0.97} \\
-            False – Recall & \textbf{0.750} & 0.500 & 0.200 & 0.20 \\
-            False – Precision & 0.176 & \textbf{0.182} & 0.143 & 0.17 \\
-            False – F1 & \textbf{0.286} & 0.267 & 0.167 & 0.18 \\
-            Macro Avg. – F1 & \textbf{0.613} & 0.612 & 0.568 & 0.58 \\
-            Balanced Accur. & \textbf{0.823} & 0.716 & 0.581 & 0.584 \\
-            \bottomrule
-        \end{tabular}
-        \caption{Accuracy, Precision, Recall, and F1-score for California Condor Models}
-        \label{tab:condor_metrics}
-    \end{table}
+
 
     \FloatBarrier
     \section{Conclusion}
@@ -581,12 +573,33 @@ mm of precipitation.
 
     \appendix
     \section{Appendix -- Plan Revision}
-    Additionally, the likelihood of the \textit{existence} of a bird sighting given a
-    particular \textit{week} is being studied. This is happening in place of studying
-    the likelihood of spotting a bird given a particular \textit{day}. The existence
-    of a bird sighting in a given week simply means there must be at least one bird
-    observation recorded, which differs from examining the number of observations
-    in a place for that species.
 
+    \begin{figure}[H]
+        \centering
+        % First row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_osprey.png}
+            \caption{Osprey: Glacier Bay, Alaska}
+            \label{fig:rand_forest_osprey}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_atlantic_puffin.png}
+            \caption{Atlantic Puffin: Massachusetts Coastal Area}
+            \label{fig:rand_forest_puffin}
+        \end{subfigure}
+
+        \vspace{0.5em}
+
+        % Second row
+        \begin{subfigure}{0.48\textwidth}
+            \includegraphics[width=\textwidth]{images/random_forest_feature_rankings/random_forest_feature_importances_california_condor.png}
+            \caption{California Condor: Grand Canyon}
+            \label{fig:rand_forest_condor}
+        \end{subfigure}
+
+        \caption{Random Forest: Most Important Features}
+        \label{fig:rand_forest_grid}
+    \end{figure}
 
 \end{document}
