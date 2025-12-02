@@ -35,7 +35,7 @@
 \usepackage{graphicx}       % for showing images
 \usepackage{subcaption}
 \usepackage{float}
-
+\usepackage{placeins}
 
 \title{Midway Report -- Exploration of Migration Patterns and Prediction of Sightings for Osprey, California Condor, and Puffin Species}
 
@@ -220,21 +220,31 @@ These map visualizations show the selected geographic regions of focus more spec
         \label{fig:geo_reg_grid}
     \end{figure}
 
-For each of these bird species and geographical area combinations, data was
-transformed to determine whether bird species sightings existed in the
-corresponding geographical areas each week between March 2015 and August 2025.
-This was created to help predict the likelihood of Osprey sightings for each
-week of the year. To do this, this data was fit to a cyclic logistic regression
-model for each species and geographic region combination.
+For each of these bird species and geographical area combinations, data was transformed to
+determine whether bird species sightings existed in the corresponding
+geographical areas each week between March 2015 and August 2025. This was
+created to help predict whether a bird species is spotted in its geographical
+region of focus given a week.
 
-Tree-based classification models including Decision Trees with pruning, Random Forest,
-Gradient Boosting Classifier, and Extreme Gradient Boosting (XGBoost) were
-trained on data and tested.
+To do this, first this data was fit to a cyclic logistic regression model for each species and
+geographic region combination to predict likelihoods based on the week number
+alone. Next, tree-based classification models were used to predict if a bird was
+be spotted during a week, given its environmental and weather data. These
+tree-based classification models included Decision Trees with pruning, Random
+Forest, Gradient Boosting Classifier, and Extreme Gradient Boosting (XGBoost).
 
-Features of the data that these models examined as input included: a continuous numeric
+Weekly data was used for the tree classifiers instead of daily or seasonal data, because it
+seemed like a more reasonable increment of time to study. For instance, bird
+sighting presence or absence data had a nice mix of sighted vs. not sighted
+values for both Osprey and Atlantic Puffins when the observation dates were grouped
+by week instead of by day. Also, the migration map animations that had one map
+per week showed a nice speed of the migration pattern that was subjectively
+neither too fast nor too slow.
+
+Features of the data that these tree models examined as input included: a continuous numeric
 representation of seasonality (labelled as week\_cos), average temperature (C),
 minimum temperature (C), maximum temperature (C), precipitation (mm), wind
-speed, air pressure, and snow.
+speed (km/hour), air pressure, and snow.
 
 The dependent variable is whether a bird was observed in its geographic region of focus, and
 each row of data represented a week and year combination.
@@ -451,39 +461,96 @@ temperature, average temperature, and seasonality (week\_cos).
 The predicting power of all four tree classification models was compared for all
 three bird species.
 
+    \begin{table}[h!]
+        \centering
+        \footnotesize
+        \begin{subtable}{0.49\textwidth}
+            \centering
+            \begin{tabular}{lcccc}
+                \toprule
+                & \textbf{Dec. Tree} & \textbf{Random Forest} & \textbf{Gradient Boosting} & \textbf{XGBoost} \\
+                \midrule
+                Accuracy & 0.652 & 0.667 & 0.776 & \textbf{0.782} \\
+                True – Recall & \textbf{0.850} & 0.750 & 0.519 & 0.26 \\
+                True – Precision & 0.274 & 0.268 & \textbf{0.368} & 0.30 \\
+                True – F1 & 0.415 & 0.395 & \textbf{0.431} & 0.28 \\
+                False – Recall & 0.619 & 0.653 & 0.826 & \textbf{0.88} \\
+                False – Precision & \textbf{0.961} & 0.939 & 0.898 & 0.86 \\
+                False – F1 & 0.753 & 0.770 & 0.860 & \textbf{0.87} \\
+                Macro Avg. – F1 & 0.584 & 0.582 & \textbf{0.646} & 0.58 \\
+                Balanced Accur. & \textbf{0.734} & 0.701 & 0.672 & 0.572 \\
+                \bottomrule
+            \end{tabular}
+            \caption{Accuracy, Precision, Recall, and F1-score for Osprey Models}
+            \label{tab:osprey_metrics}
+        \end{subtable}\hfill
+
+        \begin{subtable}{0.49\textwidth}
+            \centering
+            \footnotesize
+            \begin{tabular}{lcccc}
+                \toprule
+                & \textbf{Dec. Tree} & \textbf{Random Forest} & \textbf{Gradient Boosting} & \textbf{XGBoost} \\
+                \midrule
+                Accuracy & 0.768 & \textbf{0.783} & 0.685 & 0.703 \\
+                True – Recall & \textbf{0.600} & 0.533 & 0.372 & 0.23 \\
+                True – Precision & 0.474 & \textbf{0.500} & 0.390 & 0.38 \\
+                True – F1 & \textbf{0.529} & 0.516 & 0.381 & 0.29 \\
+                False – Recall & 0.815 & 0.852 & 0.795 & \textbf{0.87} \\
+                False – Precision & \textbf{0.880} & 0.868 & 0.782 & 0.76 \\
+                False – F1 & 0.846 & \textbf{0.860} & 0.789 & 0.81 \\
+                Macro Avg. – F1 & \textbf{0.688} & \textbf{0.688} & 0.585 & 0.55 \\
+                Balanced Accur. & \textbf{0.707} & 0.693 & 0.584 & 0.551 \\
+                \bottomrule
+            \end{tabular}
+            \caption{Accuracy, Precision, Recall, and F1-score for Atlantic Puffin Models}
+            \label{tab:puffin_metrics}
+        \end{subtable}\hfill
+    \end{table}
+    \begin{table}[h!]
+        \centering
+        \footnotesize
+        \begin{tabular}{lcccc}
+            \toprule
+            & \textbf{Dec. Tree} & \textbf{Random Forest} & \textbf{Gradient Boosting} & \textbf{XGBoost} \\
+            \midrule
+            Accuracy & 0.891 & 0.920 & 0.939 & \textbf{0.946} \\
+            True – Recall & 0.896 & 0.933 & 0.963 & \textbf{0.97} \\
+            True – Precision & \textbf{0.992} & 0.984 & 0.975 & 0.97 \\
+            True – F1 & 0.941 & 0.958 & 0.969 & \textbf{0.97} \\
+            False – Recall & \textbf{0.750} & 0.500 & 0.200 & 0.20 \\
+            False – Precision & 0.176 & \textbf{0.182} & 0.143 & 0.17 \\
+            False – F1 & \textbf{0.286} & 0.267 & 0.167 & 0.18 \\
+            Macro Avg. – F1 & \textbf{0.613} & 0.612 & 0.568 & 0.58 \\
+            Balanced Accur. & \textbf{0.823} & 0.716 & 0.581 & 0.584 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Accuracy, Precision, Recall, and F1-score for California Condor Models}
+        \label{tab:condor_metrics}
+    \end{table}
+
+    \FloatBarrier
     \section{Conclusion}
-    Although California Condors have many fewer sightings than Osprey overall, they are
-    consistently likely to be spotted in the Grand Canyon at least once a week, any
-    given week during the year. Ospreys are much more abundant than California
-    Condors, but only likely to be spotted in Glacier Bay, Alaska during the warmer
-    months. Similarly, the DBSCAN maps showing bird observations support what is
-    shown in the cyclic logistic regression plots in both cases. However, the
-    Atlantic Puffin data was slightly surprising because sightings of Atlantic
-    Puffins in the Massachusetts coastal area carried on into the winter months.
-    Atlantic Puffin binary presence per week seemed to be more common in winter
-    months. This aligns partially with how the DBSCAN map animations of Atlantic
-    Puffin migrations in the sense that Atlantic Puffins tend to migrate further
-    North than Massachusetts in the summer, in Maine and coastal South-Eastern
-    Canada.
+Although California Condors had many fewer sightings than Osprey overall, they were
+consistently likely to be spotted in the Grand Canyon at least once a week, any
+given week during the year. Ospreys are much more abundant overall than
+California Condors, as seen in the migration map animations, but only likely to
+be spotted in the Eastern Glacier Bay region in Alaska during the warmer
+months. Similarly, the DBSCAN maps animations which show bird observations and
+migration patterns support what is shown in the cyclic logistic regression
+plots in both cases.
 
-    \appendix
-    \section{Appendix -- Plan Revision}
-    DBSCAN and logistic regression were still used, but K-means
-    was dropped from the models list, because it requires the number of clusters to
-    be pre-determined. Also “cyclic” logistic regression was used instead of
-    regular logistic regression, to account for the seasonal nature of bird sighting
-    occurrences. Remaining models to implement for prediction still include Naïve Bayes,
-    Decision Trees, Random Forest, and Gradient Boosted Trees. However, I may
-    choose to replace one with XGBoost. Also, one of these models may be dropped
-    from the final results depending on how useful other models are.
+However, the Atlantic Puffin model results revealed the most surprising results. Sightings
+of Atlantic Puffins in the Massachusetts coastal area were more common during
+the winter weeks. This aligns partially with how the DBSCAN map animations of
+Atlantic Puffin migrations in the sense that Atlantic Puffins tend to migrate
+further North than Massachusetts in the summer, in Maine and coastal
+South-Eastern Canada. In addition to the winter weeks, Atlantic Puffins were
+also more likely to be spotted during non-winter weeks which had more than 5.941
+mm of precipitation.
 
-    Additionally, the likelihood of the \textit{existence} of a bird sighting given a
-    particular \textit{week} is being studied. This is happening in place of studying
-    the likelihood of spotting a bird given a particular \textit{day}. The existence
-    of a bird sighting in a given week simply means there must be at least one bird
-    observation recorded, which differs from examining the number of observations
-    in a place for that species.
-
+    \section{GitHub Link}
+    \href{https://github.com/kiglaze_ncstate/ncsu-engr-ALDA-F25-Project-P14}{\url{https://github.com/kiglaze_ncstate/ncsu-engr-ALDA-F25-Project-P14}}
 
     \section*{References}
     \medskip
@@ -511,4 +578,15 @@ three bird species.
 
     [7] eBird. About eBird. \url{https://ebird.org/about}
     }
+
+    \appendix
+    \section{Appendix -- Plan Revision}
+    Additionally, the likelihood of the \textit{existence} of a bird sighting given a
+    particular \textit{week} is being studied. This is happening in place of studying
+    the likelihood of spotting a bird given a particular \textit{day}. The existence
+    of a bird sighting in a given week simply means there must be at least one bird
+    observation recorded, which differs from examining the number of observations
+    in a place for that species.
+
+
 \end{document}
