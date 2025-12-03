@@ -104,6 +104,13 @@ models that this research uses. Although they used numerous other models, such
 as a Multilayer Perceptron Network (MLP), Random Forest and Extreme Gradient
 Boosting still outperformed other models, including MLP.
 
+Ahmed’s paper also studies eBird data but focuses on multiple species in southwestern Oregon.
+They utilize a spatial clustering algorithm, DBSC, which does not require a
+pre-defined number of clusters to identify ecological sites. It is used for a
+pre-processing step. [3] Although my project does not use DBSC, it uses DBSCAN
+to perform a preliminary pre-examination step which leads to identifying
+certain geographical regions of interest to study further.
+
     \section{Methods}
 Osprey, Atlantic Puffin, and California observation data was first studied within a
 larger geographical region (United States, Mexico, Canada, and Cuba). Then, the
@@ -565,7 +572,7 @@ mm of precipitation.
         \item \label{ref:fuentes_birdflow} Fuentes, Miguel, et al. "BirdFlow: Learning seasonal
     bird movements from eBird data." Methods in Ecology and Evolution 14.3
         (2023): 923-938.
-        \item Ahmed, dis- Nahian, et al. "Spatial clustering of
+        \item \label{ref:ahmed_clustering} Ahmed, dis- Nahian, et al. "Spatial clustering of
     citizen science data improves downstream species tribution models."
     Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 39. No. 27.
     2025.
