@@ -9,6 +9,7 @@
 \usepackage[preprint]{neurips_2024}
 \usepackage{makecell}
 \usepackage{enumitem}
+\usepackage{subcaption}
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
 % [preprint] option:
@@ -301,62 +302,64 @@ Spring and Fall, and California Condors would be occasionally spotted
 throughout the year in the Grand Canyon area, regardless of the time of year.
 
     \section{Results}
-    Here are examples of DBSCAN being applied. The first example is from observation days
-    being grouped by week, and the second example has days grouped by season.\\
-    Week 33, 2024: Osprey Observation Map
-    % Side-by-side images for Osprey week 33, 2024
-    \begin{samepage}
-        \begin{figure}[h]
-            \centering
-            \begin{minipage}{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{images/no_dbscan_osprey_week33_2024.png}
-                \caption{Without DBSCAN}
-                \label{fig:no_dbscan_osprey_wk33_24}
-            \end{minipage}\hfill
-            \begin{minipage}{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{images/dbscan_osprey_week33_2024.png}
-                \caption{With DBSCAN}
-                \label{fig:dbscan_osprey_wk33_24}
-            \end{minipage}
-        \end{figure}
+    These example bird observation maps show DBSCAN being applied. The first example shown in Figure~\ref{fig:osprey_weekly_maps} is from observation days
+    being grouped by week, and the second example shown in Figure~\ref{fig:osprey_seasonal_maps} has days grouped by season.\\
 
-        \vspace{-1em}
-        Winter 2023: Osprey Observation Map
-        % Side-by-side images for Osprey Winter 2023
-        \begin{figure}[h]
+    \begin{figure}[htbp]
+        \centering
+        \textbf{Week 33, 2024: Osprey Observation Maps}\\[0.5em]
+        \begin{subfigure}{0.48\textwidth}
             \centering
-            \begin{minipage}{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{images/no_dbscan_osprey_winter_2023.png}
-                \caption{Without DBSCAN}
-                \label{fig:no_dbscan_osprey_winter23}
-            \end{minipage}\hfill
-            \begin{minipage}{0.48\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{images/dbsan_osprey_winter_2023.png}
-                \caption{With DBSCAN}
-                \label{fig:dbscan_osprey_winter23}
-            \end{minipage}
-        \end{figure}
-    \end{samepage}
+            \includegraphics[width=\textwidth]{images/no_dbscan_osprey_week33_2024.png}
+            \caption{Without DBSCAN}
+        \end{subfigure}\hfill
+        \begin{subfigure}{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/dbscan_osprey_week33_2024.png}
+            \caption{With DBSCAN}
+        \end{subfigure}
+        \caption{Osprey observation maps for week 33, 2024, with and without DBSCAN.}
+        \label{fig:osprey_weekly_maps}
+    \end{figure}
+    \begin{figure}[htbp]
+        \centering
+        \textbf{Winter 2023: Osprey Observation Maps}\\[0.5em]
+        \begin{subfigure}{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/no_dbscan_osprey_winter_2023.png}
+            \caption{Without DBSCAN}
+        \end{subfigure}\hfill
+        \begin{subfigure}{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/dbsan_osprey_winter_2023.png}
+            \caption{With DBSCAN}
+        \end{subfigure}
+        \caption{Osprey observation maps for week 33, 2024, with and without DBSCAN.}
+        \label{fig:osprey_seasonal_maps}
+    \end{figure}
 
-    Animations linked in YouTube below demonstrate the DBSCAN maps over time from March 2023-August
+    Animations linked using YouTube below in Table~\ref{tab:post-dbscan-map-animations} demonstrate the DBSCAN maps over time from March 2023-August
     2025 for each species. The animations helped inform selecting locations of
     further focus for the next step, cyclic logistic regression.\\
 
-    Post-DBSCAN Map Animations:
-    \begin{samepage}
-        Weekly observation date groupings: \\
-        Osprey, DBSCAN, Weekly: \url{https://youtu.be/dAQBNUsSv2A} \\
-        Atlantic Puffin, DBSCAN, Weekly: \url{https://youtu.be/eX5zdkZRiiQ} \\
-        California Condor, DBSCAN, Weekly: \url{https://youtu.be/-5MAU0RcSOI} \\
-        Seasonal observation date groupings: \\
-        Osprey, DBSCAN, Seasonal: \url{https://youtu.be/8nmQlWG9Sa4} \\
-        Atlantic Puffin, DBSCAN, Seasonal: \url{https://youtu.be/Ih1CqyifmHI} \\
-        California Condor, DBSCAN, Seasonal: \url{https://youtu.be/GDQsCA-IGp8} \\
-    \end{samepage}
+    \begin{table}[H]
+        \centering
+        \caption{Post-DBSCAN Map Animations}
+        \label{tab:post-dbscan-map-animations}
+
+        \begin{tabular}{l}
+            \textbf{Weekly observation date groupings:} \\
+            Osprey, DBSCAN, Weekly: \url{https://youtu.be/dAQBNUsSv2A} \\
+            Atlantic Puffin, DBSCAN, Weekly: \url{https://youtu.be/eX5zdkZRiiQ} \\
+            California Condor, DBSCAN, Weekly: \url{https://youtu.be/-5MAU0RcSOI} \\
+            \\[-0.3em]
+            \textbf{Seasonal observation date groupings:} \\
+            Osprey, DBSCAN, Seasonal: \url{https://youtu.be/8nmQlWG9Sa4} \\
+            Atlantic Puffin, DBSCAN, Seasonal: \url{https://youtu.be/Ih1CqyifmHI} \\
+            California Condor, DBSCAN, Seasonal: \url{https://youtu.be/GDQsCA-IGp8} \\
+        \end{tabular}
+
+    \end{table}
 
     Cyclical logistic regression was carried out for the
     presence of Osprey, Atlantic Puffin, and California Condor sightings given the
