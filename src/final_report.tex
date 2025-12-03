@@ -97,8 +97,12 @@ It also provides information about the bird species’ migration patterns in
 relation to a particular geographic region, and the health of the bird
 population.
 
-    Martin’s paper uses random forests as one of the machine learning models to predict special-temporal
-    patterns. [1] This helps inform one of the models that this research will use.
+Martin’s paper uses random forests and extreme gradient boosting as some of the machine
+learning models to predict spatial-temporal patterns of Balearic Shearwater
+birds along some coastal regions in Europe. [1] This helped inform some of the
+models that this research uses. Although they used numerous other models, such
+as a Multilayer Perceptron Network (MLP), Random Forest and Extreme Gradient
+Boosting still outperformed other models, including MLP.
 
     \section{Methods}
 Osprey, Atlantic Puffin, and California observation data was first studied within a
@@ -446,6 +450,7 @@ and Random Forest models are the best for predicting an “Absent” observation
 % tighten tables
     \renewcommand{\arraystretch}{0.85}
     \setlength{\tabcolsep}{3pt}
+    \setlist{noitemsep, topsep=0pt}
 
     \renewcommand{\arraystretch}{0.85}
     \setlength{\tabcolsep}{3pt}
@@ -551,30 +556,24 @@ mm of precipitation.
     \href{https://github.com/kiglaze_ncstate/ncsu-engr-ALDA-F25-Project-P14}{\url{https://github.com/kiglaze_ncstate/ncsu-engr-ALDA-F25-Project-P14}}
 
     \section*{References}
-    \medskip
-    {
-        \small
-        [1] Martín, B., J. González-Arias, and J. A. Vicente-Vírseda.
+    {\small
+    \begin{enumerate}
+        \item \label{ref:martin_ml_patterns} Martín, B., J. González-Arias, and J. A. Vicente-Vírseda.
     "Machine learning as a successful approach for predicting complex
     spatio-temporal patterns in animal species abundance." Machine learning 44
         (2021): 289-301.
-
-        [2] Fuentes, Miguel, et al. "BirdFlow: Learning seasonal
+        \item \label{ref:fuentes_birdflow} Fuentes, Miguel, et al. "BirdFlow: Learning seasonal
     bird movements from eBird data." Methods in Ecology and Evolution 14.3
         (2023): 923-938.
-
-        [3] Ahmed, dis- Nahian, et al. "Spatial clustering of
+        \item Ahmed, dis- Nahian, et al. "Spatial clustering of
     citizen science data improves downstream species tribution models."
     Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 39. No. 27.
     2025.
-
-        [4] Cornell Lab. Osprey. All About Birds. \url{https://www.allaboutbirds.org/guide/Osprey/}
-
-    [5] Cornell Lab. California Condor. All About Birds. \url{https://www.allaboutbirds.org/guide/California_Condor/}
-
-    [6] Cornell Lab. Atlantic Puffin. All About Birds. \url{https://www.allaboutbirds.org/guide/Atlantic_Puffin/}
-
-    [7] eBird. About eBird. \url{https://ebird.org/about}
+        \item Cornell Lab. Osprey. All About Birds. \url{https://www.allaboutbirds.org/guide/Osprey/}
+        \item Cornell Lab. California Condor. All About Birds. \url{https://www.allaboutbirds.org/guide/California_Condor/}
+        \item Cornell Lab. Atlantic Puffin. All About Birds. \url{https://www.allaboutbirds.org/guide/Atlantic_Puffin/}
+        \item eBird. About eBird. \url{https://ebird.org/about}
+    \end{enumerate}
     }
 
     \appendix
