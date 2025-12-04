@@ -38,7 +38,7 @@
 \usepackage{float}
 \usepackage{placeins}
 
-\title{Midway Report -- Exploration of Migration Patterns and Prediction of Sightings for Osprey, California Condor, and Puffin Species}
+\title{Final Report -- Exploration of Migration Patterns and Prediction of Sightings for Osprey, Atlantic Puffins, and California Condors }
 
 
 % The \author macro works with any number of authors. There are two commands
@@ -66,7 +66,7 @@
     The Cornell Lab of Ornithology maintains a large database of bird observations called EBird.
     Birdwatchers submit their bird observations through the Cornell Lab of
     Ornithology mobile app or website, so the data is crowd-sourced. Data points
-    exist for thousands of bird species. [7]
+    exist for thousands of bird species. [8]
 
 This study focuses on the presence and absence of Ospreys, California Condors, and Atlantic
 Puffins in selected specific regions defined by corresponding latitude and longitude
@@ -97,12 +97,23 @@ It also provides information about the bird species’ migration patterns in
 relation to a particular geographic region, and the health of the bird
 population.
 
-Martin’s paper uses random forests and extreme gradient boosting as some of the machine
+Martin’s paper has used random forests and extreme gradient boosting as some of the machine
 learning models to predict spatial-temporal patterns of Balearic Shearwater
-birds along some coastal regions in Europe. [1] This helped inform some of the
-models that this research uses. Although they used numerous other models, such
-as a Multilayer Perceptron Network (MLP), Random Forest and Extreme Gradient
-Boosting still outperformed other models, including MLP.
+birds along some coastal regions in Europe. [1] Although they have used numerous
+other models, such as a Multilayer Perceptron Network (MLP), Random Forest and
+Extreme Gradient Boosting still outperformed other models, including MLP.
+Johnston’s paper has utilized a Random Forest model to predict the
+probabilities of presence versus absence of the Wood Thrush bird species in an
+Atlantic Northern Forest conservation region. [4] This helped inform some of
+the models that this research uses.
+
+Fink’s article uses causal forests, a model which uses random forests as a step. Their research also
+accounts for variation in weather patterns when making predictions. Weather
+variables are not the focus of the paper but rather are used to account for
+short-term variance in the prevalence of bird sightings. They also explore
+counts of observations, not just the Boolean conversion of counts (present or absent).
+[2] Our research treats weather data features a little differently. We use
+weather data as input features for the tree-based classification models.
 
 Ahmed’s paper also studies eBird data but focuses on multiple species in southwestern Oregon.
 They utilize a spatial clustering algorithm, DBSC, which does not require a
@@ -300,12 +311,22 @@ between March 1, 2015 and August 31, 2025. Another Boolean column was added to
 indicate if the bird was spotted in its geographic region of focus during that
 given week or not.
 
-Next, environmental and weather data obtained from the MeteoStat Python package was joined with this
-dataset which indicated if a bird was spotted or not. This provided more
-variables for additional model exploration of each studied species in their
-respective geographical location. These additional variables helped predict the
-presence or absence of bird species sightings in their chosen geographic region
-per week in a more detailed fashion.
+Next, environmental and weather data obtained from the MeteoStat Python package was
+joined with this dataset which indicated if a bird was spotted or not. This
+provided more variables for additional model exploration of each studied
+species in their respective geographical location. These additional variables
+helped predict the presence or absence of bird species sightings in their
+chosen geographic region per week in a more detailed fashion.
+
+However, this weather data was originally formatted per day, and each weather station had its
+own weather data history. Therefore, first all the weather data was consolidated
+into weekly averages, minimums, and maximums. Then, all weather stations within
+a latitude and longitude range of focus were combined for each week. Data for
+all variables except minimum temperature and maximum temperature was combined
+by averaging across weather stations in a region. Minimum temperature was
+obtained from the minimum “minimum temperature” across all weather stations
+being consolidated. The maximum temperatures were obtained in a similar fashion
+but using the maximum “maximum temperature”.
 
 This data setup was created to assist with revealing information about the migration patterns
 of Osprey, Atlantic Puffins, and California Condors. It also explores information to help bird watchers know when spot:
@@ -444,6 +465,8 @@ temperature, average temperature, and seasonality (week\_cos).
 
 The predicting power of all four tree classification models was compared for all
 three bird species, and these metrics are shown in Table~\ref{tab:all_species_metrics}.
+When evaluating the machine learning models’ performance, recall was considered more important than precision,
+because recall prioritizes not missing any bird sightings, even if this increases the number of false positives.
 For Osprey, Decision Tree and Gradient Boosting are best models overall, for
 predicting “Present” observation. Decision Tree and XGBoost are best for
 predicting “Absent” observation. In the case of Atlantic Puffins, the Decision
@@ -569,16 +592,15 @@ mm of precipitation.
     "Machine learning as a successful approach for predicting complex
     spatio-temporal patterns in animal species abundance." Machine learning 44
         (2021): 289-301.
-        \item \label{ref:fuentes_birdflow} Fuentes, Miguel, et al. "BirdFlow: Learning seasonal
-    bird movements from eBird data." Methods in Ecology and Evolution 14.3
-        (2023): 923-938.
+        \item \label{ref:fink_double_ml} Fink, D., Johnston, A., Strimas-Mackey, M., Auer, T., Hochachka, W. M., Ligocki, S., Oldham Jaromczyk, L., Robinson, O., Wood, C., Kelling, S., \& Rodewald, A. D. (2023). A Double machine learning trend model for citizen science data. Methods in Ecology and Evolution, 14, 2435–2448.
         \item \label{ref:ahmed_clustering} Ahmed, dis- Nahian, et al. "Spatial clustering of
     citizen science data improves downstream species tribution models."
     Proceedings of the AAAI Conference on Artificial Intelligence. Vol. 39. No. 27.
     2025.
+        \item \label{ref:johnston_cs_data} Johnston A, Hochachka WM, Strimas-Mackey ME, et al. Analytical guidelines to increase the value of community science data: An example using eBird data to estimate species distributions. Divers Distrib. 2021; 27: 1265–1277.
         \item Cornell Lab. Osprey. All About Birds. \url{https://www.allaboutbirds.org/guide/Osprey/}
-        \item Cornell Lab. California Condor. All About Birds. \url{https://www.allaboutbirds.org/guide/California_Condor/}
         \item Cornell Lab. Atlantic Puffin. All About Birds. \url{https://www.allaboutbirds.org/guide/Atlantic_Puffin/}
+        \item Cornell Lab. California Condor. All About Birds. \url{https://www.allaboutbirds.org/guide/California_Condor/}
         \item eBird. About eBird. \url{https://ebird.org/about}
     \end{enumerate}
     }
